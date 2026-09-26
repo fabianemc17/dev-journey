@@ -14,7 +14,8 @@ public class ControlGastos {
 
             switch (opcion) {
                 case "1" -> registrarGasto(scanner, gastos);
-                case "2", "3" -> System.out.println("Próximamente...");
+                case "2" -> mostrarGastos(gastos);
+                case "3" -> mostrarTotal(gastos);
                 case "0" -> corriendo = false;
                 default -> System.out.println("Opción no válida, intenta de nuevo.");
             }
@@ -49,5 +50,24 @@ public class ControlGastos {
         } catch (NumberFormatException e) {
             System.out.println("Eso no es un número válido.");
         }
+    }
+    private static void mostrarGastos(ArrayList<Double> gastos) {
+        if (gastos.isEmpty()) {
+            System.out.println("No hay gastos registrados todavía.");
+            return;
+        }
+
+        System.out.println("\n--- Tus gastos ---");
+        for (int i = 0; i < gastos.size(); i++) {
+            System.out.printf("%d. %.2f €%n", i + 1, gastos.get(i));
+        }
+    }
+
+    private static void mostrarTotal(ArrayList<Double> gastos) {
+        double total = 0;
+        for (double gasto : gastos) {
+            total += gasto;
+        }
+        System.out.printf("Total gastado: %.2f €%n", total);
     }
 }

@@ -16,6 +16,7 @@ public class ControlGastos {
                 case "1" -> registrarGasto(scanner, gastos);
                 case "2" -> mostrarGastos(gastos);
                 case "3" -> mostrarTotal(gastos);
+                case "4" -> mostrarGastoMasAlto(gastos);
                 case "0" -> corriendo = false;
                 default -> System.out.println("Opción no válida, intenta de nuevo.");
             }
@@ -30,9 +31,12 @@ public class ControlGastos {
         System.out.println("1. Registrar gasto");
         System.out.println("2. Ver gastos");
         System.out.println("3. Ver total");
+        System.out.println("4. Ver gasto mas alto");
+        System.out.println("5. Ver promedio de gastos");
         System.out.println("0. Salir");
         System.out.print("Elige una opción: ");
     }
+
     private static void registrarGasto(Scanner scanner, ArrayList<Double> gastos) {
         System.out.print("Monto del gasto: ");
         String entrada = scanner.nextLine().replace(",", ".");
@@ -51,6 +55,7 @@ public class ControlGastos {
             System.out.println("Eso no es un número válido.");
         }
     }
+
     private static void mostrarGastos(ArrayList<Double> gastos) {
         if (gastos.isEmpty()) {
             System.out.println("No hay gastos registrados todavía.");
@@ -70,4 +75,21 @@ public class ControlGastos {
         }
         System.out.printf("Total gastado: %.2f €%n", total);
     }
+
+    private static void mostrarGastoMasAlto(ArrayList<Double> gastos) {
+        if (gastos.isEmpty()) {
+            System.out.println("No hay gastos registrados todavía.");
+            return;
+        }
+
+        double mayor = gastos.get(0);
+        for (double gasto : gastos) {
+            if (gasto > mayor) {
+                mayor = gasto;
+            }
+        }
+        System.out.printf("Gasto mas alto: %.2f €%n", mayor);
+    }
+
+
 }

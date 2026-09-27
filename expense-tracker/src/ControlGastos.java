@@ -17,6 +17,7 @@ public class ControlGastos {
                 case "2" -> mostrarGastos(gastos);
                 case "3" -> mostrarTotal(gastos);
                 case "4" -> mostrarGastoMasAlto(gastos);
+                case "5" -> mostrarPromedioGastos(gastos);
                 case "0" -> corriendo = false;
                 default -> System.out.println("Opción no válida, intenta de nuevo.");
             }
@@ -69,11 +70,7 @@ public class ControlGastos {
     }
 
     private static void mostrarTotal(ArrayList<Double> gastos) {
-        double total = 0;
-        for (double gasto : gastos) {
-            total += gasto;
-        }
-        System.out.printf("Total gastado: %.2f €%n", total);
+        System.out.printf("Total gastado: %.2f €%n", calcularTotal(gastos));
     }
 
     private static void mostrarGastoMasAlto(ArrayList<Double> gastos) {
@@ -91,5 +88,22 @@ public class ControlGastos {
         System.out.printf("Gasto mas alto: %.2f €%n", mayor);
     }
 
+    private static void mostrarPromedioGastos(ArrayList<Double> gastos) {
+        if (gastos.isEmpty()) {
+            System.out.println("No hay gastos registrados todavía.");
+            return;
+        }
+
+        double promedio = calcularTotal(gastos) / gastos.size();
+        System.out.printf("El promedio de gasto es: %.2f €%n", promedio);
+    }
+
+    private static double calcularTotal(ArrayList<Double> gastos) {
+        double total = 0;
+        for (double gasto : gastos) {
+            total += gasto;
+        }
+        return total;
+    }
 
 }

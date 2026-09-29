@@ -5,7 +5,7 @@ public class ControlGastos {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Double> gastos = new ArrayList<>();
+        ArrayList<Gasto> gastos = new ArrayList<>();
         boolean corriendo = true;
 
         while (corriendo) {
@@ -32,13 +32,29 @@ public class ControlGastos {
         System.out.println("1. Registrar gasto");
         System.out.println("2. Ver gastos");
         System.out.println("3. Ver total");
-        System.out.println("4. Ver gasto mas alto");
+        System.out.println("4. Ver gasto más alto");
         System.out.println("5. Ver promedio de gastos");
         System.out.println("0. Salir");
         System.out.print("Elige una opción: ");
     }
 
-    private static void registrarGasto(Scanner scanner, ArrayList<Double> gastos) {
+    private static void registrarGasto(Scanner scanner, ArrayList<Gasto> gastos) {
+        System.out.print("Concepto: ");
+        String concepto = scanner.nextLine().trim();
+
+        if (concepto.isBlank()) {
+            System.out.println("El concepto no puede estar vacío.");
+            return;
+        }
+
+        System.out.print("Lugar: ");
+        String lugar = scanner.nextLine().trim();
+
+        if (lugar.isBlank()) {
+            System.out.println("El lugar no puede estar vacío.");
+            return;
+        }
+
         System.out.print("Monto del gasto: ");
         String entrada = scanner.nextLine().replace(",", ".");
 
@@ -50,43 +66,45 @@ public class ControlGastos {
                 return;
             }
 
-            gastos.add(monto);
+            Gasto nuevoGasto = new Gasto(monto, concepto, lugar);
+            gastos.add(nuevoGasto);
+
             System.out.println("Gasto registrado ✔");
         } catch (NumberFormatException e) {
             System.out.println("Eso no es un número válido.");
         }
     }
 
-    private static void mostrarGastos(ArrayList<Double> gastos) {
+    private static void mostrarGastos(ArrayList<Gasto> gastos) {
         if (!hayGastos(gastos)) {
             return;
         }
 
         System.out.println("\n--- Tus gastos ---");
         for (int i = 0; i < gastos.size(); i++) {
-            System.out.printf("%d. %.2f €%n", i + 1, gastos.get(i));
+            System.out.printf("%d. %s%n", i + 1, gastos.get(i));
         }
     }
 
-    private static void mostrarTotal(ArrayList<Double> gastos) {
+    private static void mostrarTotal(ArrayList<Gasto> gastos) {
         System.out.printf("Total gastado: %.2f €%n", calcularTotal(gastos));
     }
 
-    private static void mostrarGastoMasAlto(ArrayList<Double> gastos) {
+    private static void mostrarGastoMasAlto(ArrayList<Gasto> gastos) {
         if (!hayGastos(gastos)) {
             return;
         }
 
-        double mayor = gastos.get(0);
-        for (double gasto : gastos) {
-            if (gasto > mayor) {
+        Gasto mayor = gastos.get(0);
+        for (Gasto gasto : gastos) {
+            if (gasto.getMonto() > mayor.getMonto()) {
                 mayor = gasto;
             }
         }
-        System.out.printf("Gasto mas alto: %.2f €%n", mayor);
+        System.out.printf("Gasto más alto: %s%n", mayor);
     }
 
-    private static void mostrarPromedioGastos(ArrayList<Double> gastos) {
+    private static void mostrarPromedioGastos(ArrayList<Gasto> gastos) {
         if (!hayGastos(gastos)) {
             return;
         }
@@ -95,15 +113,15 @@ public class ControlGastos {
         System.out.printf("El promedio de gasto es: %.2f €%n", promedio);
     }
 
-    private static double calcularTotal(ArrayList<Double> gastos) {
+    private static double calcularTotal(ArrayList<Gasto> gastos) {
         double total = 0;
-        for (double gasto : gastos) {
-            total += gasto;
+        for (Gasto gasto : gastos) {
+            total += gasto.getMonto();
         }
         return total;
     }
 
-    private static boolean hayGastos(ArrayList<Double> gastos) {
+    private static boolean hayGastos(ArrayList<Gasto> gastos) {
         if (gastos.isEmpty()) {
             System.out.println("No hay gastos registrados todavía.");
             return false;

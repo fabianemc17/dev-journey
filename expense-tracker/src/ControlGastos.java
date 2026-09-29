@@ -58,8 +58,7 @@ public class ControlGastos {
     }
 
     private static void mostrarGastos(ArrayList<Double> gastos) {
-        if (gastos.isEmpty()) {
-            System.out.println("No hay gastos registrados todavía.");
+        if (!hayGastos(gastos)) {
             return;
         }
 
@@ -74,8 +73,7 @@ public class ControlGastos {
     }
 
     private static void mostrarGastoMasAlto(ArrayList<Double> gastos) {
-        if (gastos.isEmpty()) {
-            System.out.println("No hay gastos registrados todavía.");
+        if (!hayGastos(gastos)) {
             return;
         }
 
@@ -89,8 +87,7 @@ public class ControlGastos {
     }
 
     private static void mostrarPromedioGastos(ArrayList<Double> gastos) {
-        if (gastos.isEmpty()) {
-            System.out.println("No hay gastos registrados todavía.");
+        if (!hayGastos(gastos)) {
             return;
         }
 
@@ -104,6 +101,14 @@ public class ControlGastos {
             total += gasto;
         }
         return total;
+    }
+
+    private static boolean hayGastos(ArrayList<Double> gastos) {
+        if (gastos.isEmpty()) {
+            System.out.println("No hay gastos registrados todavía.");
+            return false;
+        }
+        return true;
     }
 
 }

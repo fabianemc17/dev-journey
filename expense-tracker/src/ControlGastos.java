@@ -42,16 +42,14 @@ public class ControlGastos {
         System.out.print("Concepto: ");
         String concepto = scanner.nextLine().trim();
 
-        if (concepto.isBlank()) {
-            System.out.println("El concepto no puede estar vacío.");
+        if (!esTextoValido(concepto)) {
             return;
         }
 
         System.out.print("Lugar: ");
         String lugar = scanner.nextLine().trim();
 
-        if (lugar.isBlank()) {
-            System.out.println("El lugar no puede estar vacío.");
+        if (!esTextoValido(lugar)) {
             return;
         }
 
@@ -124,6 +122,14 @@ public class ControlGastos {
     private static boolean hayGastos(ArrayList<Gasto> gastos) {
         if (gastos.isEmpty()) {
             System.out.println("No hay gastos registrados todavía.");
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean esTextoValido(String texto) {
+        if (texto.isBlank()) {
+            System.out.println("Este campo no puede ir vacío.");
             return false;
         }
         return true;

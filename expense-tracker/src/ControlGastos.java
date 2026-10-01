@@ -41,25 +41,11 @@ public class ControlGastos {
     private static void registrarGasto(Scanner scanner, ArrayList<Gasto> gastos) {
         String concepto = leerTextoObligatorio(scanner, "Concepto: ");
         String lugar = leerTextoObligatorio(scanner, "Lugar: ");
+        double monto = leerMontoValido(scanner, "Monto del gasto: ");
 
-        System.out.print("Monto del gasto: ");
-        String entrada = scanner.nextLine().replace(",", ".");
-
-        try {
-            double monto = Double.parseDouble(entrada);
-
-            if (monto <= 0) {
-                System.out.println("El monto tiene que ser mayor que 0.");
-                return;
-            }
-
-            Gasto nuevoGasto = new Gasto(monto, concepto, lugar);
-            gastos.add(nuevoGasto);
-
-            System.out.println("Gasto registrado ✔");
-        } catch (NumberFormatException e) {
-            System.out.println("Eso no es un número válido.");
-        }
+        Gasto nuevoGasto = new Gasto(monto, concepto, lugar);
+        gastos.add(nuevoGasto);
+        System.out.println("Gasto registrado ✔");
     }
 
     private static void mostrarGastos(ArrayList<Gasto> gastos) {
@@ -131,6 +117,25 @@ public class ControlGastos {
 
             if (esTextoValido(texto)) {
                 return texto;
+            }
+        }
+    }
+
+    private static double leerMontoValido(Scanner scanner, String mensaje) {
+        while (true) {
+            System.out.print(mensaje);
+            String entrada = scanner.nextLine().replace(",", ".");
+
+            try {
+                double monto = Double.parseDouble(entrada);
+
+                if (monto <= 0) {
+                    System.out.println("El monto tiene que ser mayor que 0.");
+                } else {
+                    return monto;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Eso no es un número válido.");
             }
         }
     }

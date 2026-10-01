@@ -39,19 +39,8 @@ public class ControlGastos {
     }
 
     private static void registrarGasto(Scanner scanner, ArrayList<Gasto> gastos) {
-        System.out.print("Concepto: ");
-        String concepto = scanner.nextLine().trim();
-
-        if (!esTextoValido(concepto)) {
-            return;
-        }
-
-        System.out.print("Lugar: ");
-        String lugar = scanner.nextLine().trim();
-
-        if (!esTextoValido(lugar)) {
-            return;
-        }
+        String concepto = leerTextoObligatorio(scanner, "Concepto: ");
+        String lugar = leerTextoObligatorio(scanner, "Lugar: ");
 
         System.out.print("Monto del gasto: ");
         String entrada = scanner.nextLine().replace(",", ".");
@@ -135,4 +124,14 @@ public class ControlGastos {
         return true;
     }
 
+    private static String leerTextoObligatorio(Scanner scanner, String mensaje) {
+        while (true) {
+            System.out.print(mensaje);
+            String texto = scanner.nextLine().trim();
+
+            if (esTextoValido(texto)) {
+                return texto;
+            }
+        }
+    }
 }

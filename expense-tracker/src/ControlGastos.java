@@ -42,8 +42,9 @@ public class ControlGastos {
         String concepto = leerTextoObligatorio(scanner, "Concepto: ");
         String lugar = leerTextoObligatorio(scanner, "Lugar: ");
         double monto = leerMontoValido(scanner, "Monto del gasto: ");
+        Categoria categoria = leerCategoria(scanner);
 
-        Gasto nuevoGasto = new Gasto(monto, concepto, lugar);
+        Gasto nuevoGasto = new Gasto(monto, concepto, lugar, categoria);
         gestor.agregar(nuevoGasto);
         System.out.println("Gasto registrado ✔");
     }
@@ -69,6 +70,7 @@ public class ControlGastos {
         if (!hayGastos(gestor)) {
             return;
         }
+
         Gasto mayor = gestor.obtenerMasAlto();
         System.out.printf("Gasto más alto: %s%n", mayor);
     }
@@ -77,6 +79,7 @@ public class ControlGastos {
         if (!hayGastos(gestor)) {
             return;
         }
+
         System.out.printf("El promedio de gasto es: %.2f €%n", gestor.calcularPromedio());
     }
 
@@ -120,6 +123,31 @@ public class ControlGastos {
                 } else {
                     return monto;
                 }
+            } catch (NumberFormatException e) {
+                System.out.println("Eso no es un número válido.");
+            }
+        }
+    }
+
+    private static Categoria leerCategoria(Scanner scanner) {
+        Categoria[] categorias = Categoria.values();
+
+        System.out.println("Categorías:");
+        for (int i = 0; i < categorias.length; i++) {
+            System.out.printf("%d. %s%n", i + 1, categorias[i]);
+        }
+
+        while (true) {
+            System.out.print("Elige una categoría: ");
+            String entrada = scanner.nextLine().trim();
+
+            try {
+                int opcion = Integer.parseInt(entrada);
+
+                if (opcion >= 1 && opcion <= categorias.length) {
+                    return categorias[opcion - 1];
+                }
+                System.out.println("Elige un número de la lista.");
             } catch (NumberFormatException e) {
                 System.out.println("Eso no es un número válido.");
             }

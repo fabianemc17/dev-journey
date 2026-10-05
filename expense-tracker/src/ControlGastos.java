@@ -5,7 +5,7 @@ public class ControlGastos {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Gasto> gastos = new ArrayList<>();
+        GestorGastos gestor = new GestorGastos();
         boolean corriendo = true;
 
         while (corriendo) {
@@ -13,11 +13,11 @@ public class ControlGastos {
             String opcion = scanner.nextLine();
 
             switch (opcion) {
-                case "1" -> registrarGasto(scanner, gastos);
-                case "2" -> mostrarGastos(gastos);
-                case "3" -> mostrarTotal(gastos);
-                case "4" -> mostrarGastoMasAlto(gastos);
-                case "5" -> mostrarPromedioGastos(gastos);
+                case "1" -> registrarGasto(scanner, gestor);
+                case "2" -> mostrarGastos(gestor);
+                case "3" -> mostrarTotal(gestor);
+                case "4" -> mostrarGastoMasAlto(gestor);
+                case "5" -> mostrarPromedioGastos(gestor);
                 case "0" -> corriendo = false;
                 default -> System.out.println("Opción no válida, intenta de nuevo.");
             }
@@ -38,64 +38,50 @@ public class ControlGastos {
         System.out.print("Elige una opción: ");
     }
 
-    private static void registrarGasto(Scanner scanner, ArrayList<Gasto> gastos) {
+    private static void registrarGasto(Scanner scanner, GestorGastos gestor) {
         String concepto = leerTextoObligatorio(scanner, "Concepto: ");
         String lugar = leerTextoObligatorio(scanner, "Lugar: ");
         double monto = leerMontoValido(scanner, "Monto del gasto: ");
 
         Gasto nuevoGasto = new Gasto(monto, concepto, lugar);
-        gastos.add(nuevoGasto);
+        gestor.agregar(nuevoGasto);
         System.out.println("Gasto registrado ✔");
     }
 
-    private static void mostrarGastos(ArrayList<Gasto> gastos) {
-        if (!hayGastos(gastos)) {
+    private static void mostrarGastos(GestorGastos gestor) {
+        if (!hayGastos(gestor)) {
             return;
         }
 
+        ArrayList<Gasto> gastos = gestor.obtenerGastos();
         System.out.println("\n--- Tus gastos ---");
+
         for (int i = 0; i < gastos.size(); i++) {
             System.out.printf("%d. %s%n", i + 1, gastos.get(i));
         }
     }
 
-    private static void mostrarTotal(ArrayList<Gasto> gastos) {
-        System.out.printf("Total gastado: %.2f €%n", calcularTotal(gastos));
+    private static void mostrarTotal(GestorGastos gestor) {
+        System.out.printf("Total gastado: %.2f €%n", gestor.calcularTotal());
     }
 
-    private static void mostrarGastoMasAlto(ArrayList<Gasto> gastos) {
-        if (!hayGastos(gastos)) {
+    private static void mostrarGastoMasAlto(GestorGastos gestor) {
+        if (!hayGastos(gestor)) {
             return;
         }
-
-        Gasto mayor = gastos.get(0);
-        for (Gasto gasto : gastos) {
-            if (gasto.getMonto() > mayor.getMonto()) {
-                mayor = gasto;
-            }
-        }
+        Gasto mayor = gestor.obtenerMasAlto();
         System.out.printf("Gasto más alto: %s%n", mayor);
     }
 
-    private static void mostrarPromedioGastos(ArrayList<Gasto> gastos) {
-        if (!hayGastos(gastos)) {
+    private static void mostrarPromedioGastos(GestorGastos gestor) {
+        if (!hayGastos(gestor)) {
             return;
         }
-
-        double promedio = calcularTotal(gastos) / gastos.size();
-        System.out.printf("El promedio de gasto es: %.2f €%n", promedio);
+        System.out.printf("El promedio de gasto es: %.2f €%n", gestor.calcularPromedio());
     }
 
-    private static double calcularTotal(ArrayList<Gasto> gastos) {
-        double total = 0;
-        for (Gasto gasto : gastos) {
-            total += gasto.getMonto();
-        }
-        return total;
-    }
-
-    private static boolean hayGastos(ArrayList<Gasto> gastos) {
-        if (gastos.isEmpty()) {
+    private static boolean hayGastos(GestorGastos gestor) {
+        if (gestor.estaVacio()) {
             System.out.println("No hay gastos registrados todavía.");
             return false;
         }

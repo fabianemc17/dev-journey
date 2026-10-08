@@ -3,7 +3,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 
 public class Gasto {
-    public static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT);
+    public static final DateTimeFormatter FORMATO_FECHA =
+            DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT);
 
     private final double monto;
     private final String concepto;

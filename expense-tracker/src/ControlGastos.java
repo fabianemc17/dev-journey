@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -43,8 +46,9 @@ public class ControlGastos {
         String lugar = leerTextoObligatorio(scanner, "Lugar: ");
         double monto = leerMontoValido(scanner, "Monto del gasto: ");
         Categoria categoria = leerCategoria(scanner);
+        LocalDate fecha = leerFecha(scanner);
 
-        Gasto nuevoGasto = new Gasto(monto, concepto, lugar, categoria);
+        Gasto nuevoGasto = new Gasto(monto, concepto, lugar, categoria, fecha);
         gestor.agregar(nuevoGasto);
         System.out.println("Gasto registrado ✔");
     }
@@ -150,6 +154,23 @@ public class ControlGastos {
                 System.out.println("Elige un número de la lista.");
             } catch (NumberFormatException e) {
                 System.out.println("Eso no es un número válido.");
+            }
+        }
+    }
+
+    private static LocalDate leerFecha(Scanner scanner) {
+        while (true) {
+            System.out.print("Fecha (dd/mm/aaaa) [Enter = hoy]: ");
+            String entrada = scanner.nextLine().trim();
+
+            if (entrada.isBlank()) {
+                return LocalDate.now();
+            }
+
+            try {
+                return LocalDate.parse(entrada, Gasto.FORMATO_FECHA);
+            } catch (DateTimeParseException e) {
+                System.out.println("Fecha no válida. Usa el formato dd/mm/aaaa.");
             }
         }
     }
